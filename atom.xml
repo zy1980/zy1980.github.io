@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Science, Engineering, Life]]></title>
+  
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-05-01T11:02:35.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name><![CDATA[chih.yang@outlook.com]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Old Blogs here]]></title>
+    <link href="http://yoursite.com/2015/05/01/Old-Blogs-here/"/>
+    <id>http://yoursite.com/2015/05/01/Old-Blogs-here/</id>
+    <published>2015-05-01T10:56:14.000Z</published>
+    <updated>2015-05-01T11:02:35.000Z</updated>
+    <content type="html"><![CDATA[<p>Some old blogs here:<br><a href="http://chihyangscience.github.io" target="_blank" rel="external">http://chihyangscience.github.io</a><br><a href="http://blog.linkweb.me" target="_blank" rel="external">http://blog.linkweb.me</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Some old blogs here:<br><a href="http://chihyangscience.github.io" target="_blank" rel="external">http://chihyangscience.github.io</a><br]]>
+    </summary>
+    
+      <category term="life" scheme="http://yoursite.com/tags/life/"/>
+    
+  </entry>
+  
+</feed>
