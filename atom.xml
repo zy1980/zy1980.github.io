@@ -3,9 +3,9 @@
   <title><![CDATA[Science, Engineering, Life]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
+  <link href="http://blog.chihyang.com/"/>
   <updated>2015-05-02T09:36:18.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://blog.chihyang.com/</id>
   
   <author>
     <name><![CDATA[chih.yang@outlook.com]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[ALS collaborative filtering for implicit feedback data]]></title>
-    <link href="http://yoursite.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/"/>
-    <id>http://yoursite.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/</id>
+    <link href="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/"/>
+    <id>http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/</id>
     <published>2015-05-02T07:22:56.000Z</published>
     <updated>2015-05-02T09:36:18.000Z</updated>
     <content type="html"><![CDATA[<p>Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we can get some implict feedback data, e.g. $r_{ui}$ express how frequently a user is buying a certain item, how much time the user view a web page. For these kind of data, there is a variant ALS collaborative filtering solution for it.</p>
@@ -34,14 +34,14 @@
     <![CDATA[<p>Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many ]]>
     </summary>
     
-      <category term="machine learning" scheme="http://yoursite.com/tags/machine-learning/"/>
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Old Blogs here]]></title>
-    <link href="http://yoursite.com/2015/05/01/Old-Blogs-here/"/>
-    <id>http://yoursite.com/2015/05/01/Old-Blogs-here/</id>
+    <link href="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/"/>
+    <id>http://blog.chihyang.com/2015/05/01/Old-Blogs-here/</id>
     <published>2015-05-01T10:56:14.000Z</published>
     <updated>2015-05-01T11:02:35.000Z</updated>
     <content type="html"><![CDATA[<p>Some old blogs here:<br><a href="http://chihyangscience.github.io" target="_blank" rel="external">http://chihyangscience.github.io</a><br><a href="http://blog.linkweb.me" target="_blank" rel="external">http://blog.linkweb.me</a></p>
@@ -50,7 +50,7 @@
     <![CDATA[<p>Some old blogs here:<br><a href="http://chihyangscience.github.io" target="_blank" rel="external">http://chihyangscience.github.io</a><br]]>
     </summary>
     
-      <category term="life" scheme="http://yoursite.com/tags/life/"/>
+      <category term="life" scheme="http://blog.chihyang.com/tags/life/"/>
     
   </entry>
   
