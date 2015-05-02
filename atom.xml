@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-05-01T11:02:35.000Z</updated>
+  <updated>2015-05-02T09:36:18.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,6 +13,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ALS collaborative filtering for implicit feedback data]]></title>
+    <link href="http://yoursite.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/"/>
+    <id>http://yoursite.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/</id>
+    <published>2015-05-02T07:22:56.000Z</published>
+    <updated>2015-05-02T09:36:18.000Z</updated>
+    <content type="html"><![CDATA[<p>Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we can get some implict feedback data, e.g. $r_{ui}$ express how frequently a user is buying a certain item, how much time the user view a web page. For these kind of data, there is a variant ALS collaborative filtering solution for it.</p>
+<p>Normally the numerical values of implicit feedback describe the frequency of actions, it express confidence how user like or dislike the item. Introduce binary variables $p_{ui}$, indicates the preference of user u to item i, defined as:<br>$$<br>p_{ui}=1 \text{ if } r_{ui}&gt;0, \text{ else } =0<br>$$</p>
+<p>to express the confidence of the preference, introdcue another variable:<br>$$<br>c_{ui}=1+\alpha r_{ui}<br>$$</p>
+<p>$\alpha$ controlled by experiment, as observe more evidence for positive preference, confidence in $p_{ui} = 1$ increases accordingly. We still employ the latent factor model, assume there is user factor $x_u$, item factor $y_i$, their inner product determine the perference, that is:<br>$$<br>p_{ui}=x^T_uy_i<br>$$</p>
+<p>here user and item factor should be common latent factor, because $p_{ui}$ is independent of scale, so it make sense. The cost function will be minimized is:<br>$$<br>\sum_{u,i}c_{ui}(p_{ui}-x^T_uy_i)^2+\lambda(\sum_u|x_u|^2+\sum_i|y_i|^2)<br>$$</p>
+<p>which weighted by its confidence. suppose $y_i$ is i-th row of nxf matrix Y, $x_u$ is u-th row of mxf matrix X, and for each user introduce diagonal nxn matrix $C^u$ for $C^u_{ii}=c_{ui}$,and vector $p(u) \in R^n$ contains all the preferences by u(the $p_{ui}$ values), derivative w.r.t $x_u$, get:<br>$$<br>-\sum_ic_{ui}(p_{ui}-x^T_uy_i)y_i+\lambda x_u=0 \\<br>=&gt; x_u=(\sum_i c_{ui}y_iy_i^T+\lambda)^{-1}\sum_ic_{ui}p_{ui}y_i \\<br>=&gt; x_u=(Y^TC^uY+\lambda I)^{-1}Y^TC^up(u)<br>$$</p>
+<p>same process get:<br>$$<br>y_i=(X^TC^iX+\lambda I)^{-1}X^TC^ip(i)<br>$$</p>
+<p>here p(i) is all the preferences for i, $C^i$ is diagonal m×m matrix C where $C^i_{uu} = c_{ui}$, to evaluate $Y^TC^uY$, note: $Y^TC^uY=Y^TY+Y^T(C^u-I)Y$, there are only small fraction of non-zero elements, this will speed up the calculation.</p>
+<p>When make recommendation, the inner product generally will not be 1 or 0, so recommend to user u the K items with the top K largest values of $p_{ui}$</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many ]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://yoursite.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Old Blogs here]]></title>
