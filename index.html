@@ -66,6 +66,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-restricted-Boltzmann-machine-on-document-classification" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" class="article-date">
+  <time datetime="2015-05-03T07:40:19.000Z" itemprop="datePublished">2015-05-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.</p>
+<p>Suppose K is the dictionary size and D is the document size, each word in document is a input of RBM v, F is number of document topic, each topic is a hidden binary unit h,so we are interested to get $p(H_i=1|V)$ which is the posterior probability of the topic,  V is a K × D observed binary matrix with $v_i^k = 1$ if visible unit i takes on kth value, it is a softmax RBM:<br>$$<br>p(V,h)=\frac{1}{Z}e^{-E(V,h)} \\<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-\sum^F_{j=1}h_ja_j \\<br>$$</p>
+<p>to make it scale with variable document size, change the hidden unit term, instead use energy:<br>$$<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>because the document size is variable, so for each document define a RBM, to simplify the model, assume all of these softmax units can share the same set of weights, connecting them to binary hidden units and ignore the word order, so $w^k_{ij}$ independent of work input, $w^k_{ij}=w^k_j$, define $\bar{v}^k=\sum^D_{i=1}v^k_i$ to be the count of the k-th word in the document, energy can be written:<br>$$<br>E(V,h)=-\sum^F_{j=1}\sum^K_{k=1}w^k_{j}h_j\bar{v}^k-\sum^K_{k=1}\bar{v}^kb^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>conditional distribution changed to:<br>$$<br>p(h_j=1|V)=\sigma(Da_j+\sum^K_{k=1}w^k_j\bar{v}^k)<br>$$</p>
+<p>The training process is same as before which use Contrastive Divergence:<br>$$<br>\delta w^k_j=\alpha ([\bar{v}^k h_j]_{data}−[\bar{v}^kh_j]_T)<br>$$</p>
+<p>After train the model, for each document V, we can evaluate $p(h_j|V)$, classify it to topic j which having latest posterior probability.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci985ez1v0006ovfyrlfpq6o4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ALS-collaborative-filtering-for-implicit-feedback-data" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" class="article-date">
@@ -163,7 +208,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -172,7 +217,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/life/" style="font-size: NaNpx;">life</a><a href="/tags/machine-learning/" style="font-size: NaNpx;">machine learning</a>
+      <a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/machine-learning/" style="font-size: 20px;">machine learning</a>
     </div>
   </div>
 
@@ -181,7 +226,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -191,6 +236,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>
+          </li>
         
           <li>
             <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/">ALS collaborative filtering for implicit feedback data</a>

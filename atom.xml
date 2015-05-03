@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.chihyang.com/"/>
-  <updated>2015-05-02T09:36:18.000Z</updated>
+  <updated>2015-05-03T09:28:54.000Z</updated>
   <id>http://blog.chihyang.com/</id>
   
   <author>
@@ -13,6 +13,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[restricted Boltzmann machine on document classification]]></title>
+    <link href="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/"/>
+    <id>http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/</id>
+    <published>2015-05-03T07:40:19.000Z</published>
+    <updated>2015-05-03T09:28:54.000Z</updated>
+    <content type="html"><![CDATA[<p>Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.</p>
+<p>Suppose K is the dictionary size and D is the document size, each word in document is a input of RBM v, F is number of document topic, each topic is a hidden binary unit h,so we are interested to get $p(H_i=1|V)$ which is the posterior probability of the topic,  V is a K × D observed binary matrix with $v_i^k = 1$ if visible unit i takes on kth value, it is a softmax RBM:<br>$$<br>p(V,h)=\frac{1}{Z}e^{-E(V,h)} \\<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-\sum^F_{j=1}h_ja_j \\<br>$$</p>
+<p>to make it scale with variable document size, change the hidden unit term, instead use energy:<br>$$<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>because the document size is variable, so for each document define a RBM, to simplify the model, assume all of these softmax units can share the same set of weights, connecting them to binary hidden units and ignore the word order, so $w^k_{ij}$ independent of work input, $w^k_{ij}=w^k_j$, define $\bar{v}^k=\sum^D_{i=1}v^k_i$ to be the count of the k-th word in the document, energy can be written:<br>$$<br>E(V,h)=-\sum^F_{j=1}\sum^K_{k=1}w^k_{j}h_j\bar{v}^k-\sum^K_{k=1}\bar{v}^kb^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>conditional distribution changed to:<br>$$<br>p(h_j=1|V)=\sigma(Da_j+\sum^K_{k=1}w^k_j\bar{v}^k)<br>$$</p>
+<p>The training process is same as before which use Contrastive Divergence:<br>$$<br>\delta w^k_j=\alpha ([\bar{v}^k h_j]_{data}−[\bar{v}^kh_j]_T)<br>$$</p>
+<p>After train the model, for each document V, we can evaluate $p(h_j|V)$, classify it to topic j which having latest posterior probability.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning mo]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[ALS collaborative filtering for implicit feedback data]]></title>

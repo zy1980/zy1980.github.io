@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015/5 | Science, Engineering, Life</title>
+  <title>restricted Boltzmann machine on document classification | Science, Engineering, Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Science, Engineering, Life">
-<meta property="og:url" content="http://blog.chihyang.com/archives/2015/05/index.html">
+  <meta name="description" content="Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.
+Suppose K is the dictionary size and D is the document siz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="restricted Boltzmann machine on document classification">
+<meta property="og:url" content="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/index.html">
 <meta property="og:site_name" content="Science, Engineering, Life">
-<meta property="og:description">
+<meta property="og:description" content="Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.
+Suppose K is the dictionary size and D is the document siz">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Science, Engineering, Life">
-<meta name="twitter:description">
+<meta name="twitter:title" content="restricted Boltzmann machine on document classification">
+<meta name="twitter:description" content="Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.
+Suppose K is the dictionary size and D is the document siz">
   
     <link rel="alternative" href="/atom.xml" title="Science, Engineering, Life" type="application/atom+xml">
   
@@ -64,77 +67,61 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" class="archive-article-date">
-  <time datetime="2015-05-03T07:40:19.000Z" itemprop="datePublished">May 3</time>
+        <section id="main"><article id="post-restricted-Boltzmann-machine-on-document-classification" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" class="article-date">
+  <time datetime="2015-05-03T07:40:19.000Z" itemprop="datePublished">2015-05-03</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>
+    <h1 class="article-title" itemprop="name">
+      restricted Boltzmann machine on document classification
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" class="archive-article-date">
-  <time datetime="2015-05-02T07:22:56.000Z" itemprop="datePublished">May 2</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/">ALS collaborative filtering for implicit feedback data</a>
-    </h1>
-  
+        <p>Restricted Boltzmann machine can be used for document classification as kind of latent factor model, and it is a unsupervised learning model.</p>
+<p>Suppose K is the dictionary size and D is the document size, each word in document is a input of RBM v, F is number of document topic, each topic is a hidden binary unit h,so we are interested to get $p(H_i=1|V)$ which is the posterior probability of the topic,  V is a K × D observed binary matrix with $v_i^k = 1$ if visible unit i takes on kth value, it is a softmax RBM:<br>$$<br>p(V,h)=\frac{1}{Z}e^{-E(V,h)} \\<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-\sum^F_{j=1}h_ja_j \\<br>$$</p>
+<p>to make it scale with variable document size, change the hidden unit term, instead use energy:<br>$$<br>E(V,h)=-\sum^D_{i=1}\sum^F_{j=1}\sum^K_{k=1}w^k_{ij}h_jv^k_i-\sum^D_{i=1}\sum^K_{k=1}v^k_ib^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>because the document size is variable, so for each document define a RBM, to simplify the model, assume all of these softmax units can share the same set of weights, connecting them to binary hidden units and ignore the word order, so $w^k_{ij}$ independent of work input, $w^k_{ij}=w^k_j$, define $\bar{v}^k=\sum^D_{i=1}v^k_i$ to be the count of the k-th word in the document, energy can be written:<br>$$<br>E(V,h)=-\sum^F_{j=1}\sum^K_{k=1}w^k_{j}h_j\bar{v}^k-\sum^K_{k=1}\bar{v}^kb^k_i-D\sum^F_{j=1}h_ja_j<br>$$</p>
+<p>conditional distribution changed to:<br>$$<br>p(h_j=1|V)=\sigma(Da_j+\sum^K_{k=1}w^k_j\bar{v}^k)<br>$$</p>
+<p>The training process is same as before which use Contrastive Divergence:<br>$$<br>\delta w^k_j=\alpha ([\bar{v}^k h_j]_{data}−[\bar{v}^kh_j]_T)<br>$$</p>
+<p>After train the model, for each document V, we can evaluate $p(h_j|V)$, classify it to topic j which having latest posterior probability.</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/01/Old-Blogs-here/" class="archive-article-date">
-  <time datetime="2015-05-01T10:56:14.000Z" itemprop="datePublished">May 1</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/01/Old-Blogs-here/">Old Blogs here</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci985ez1v0006ovfyrlfpq6o4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ALS collaborative filtering for implicit feedback data</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">
