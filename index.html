@@ -66,6 +66,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-RBM-for-Collaborative-Filtering" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/06/RBM-for-Collaborative-Filtering/" class="article-date">
+  <time datetime="2015-05-06T07:31:02.000Z" itemprop="datePublished">2015-05-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/06/RBM-for-Collaborative-Filtering/">RBM for Collaborative Filtering</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has the same number of hidden units, but an RBM only has visible softmax units for the movies rated by that user, so an RBM has few connections if that user rated few movies, to simply the model, assume weights and biases are tied together, so if two users have rated the same movie, their two RBM’s must use the same weights between the softmax visible unit for that movie and the hidden units, an suppose a user rated m movies, let V be a K × m observed binary indicator matrix with $v_{i}^k = 1$ if the user rated movie i as k and 0 otherwise. also let $h_j$, j = 1,…,F. So this is a softmax RBM, to make prediction, need to evaluate:<br>$$<br>p(v_q^k=1|V)=\frac{p(v_q^k,V)}{p(V)} \sim \sum_h exp(-E(v_q^k,V,h))\\<br>\sim exp(v_q^kb_q^k)\prod^F_{j=1}(1+exp(\sum_{il}v_i^lw_{ij}^l+v_q^kw_{qj}^k+b_j))<br>$$</p>
+<p>after train the model, pick the rating k with the maximum probability.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9cfgsm50003s3s6mt63y3h0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-restricted-Boltzmann-machine-on-document-classification" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" class="article-date">
@@ -99,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci985ez1v0006ovfyrlfpq6o4" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9cfgskd0000s3s6rq2pddqq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -146,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci96x595o0003ovfysb67wpql" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9cfgsn20007s3s6fqj8u4ev" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -185,7 +225,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci96x594k0000ovfydyxz90gt" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9cfgsmy0004s3s6ru1ijpko" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
@@ -208,7 +248,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -226,7 +266,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -236,6 +276,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/05/06/RBM-for-Collaborative-Filtering/">RBM for Collaborative Filtering</a>
+          </li>
         
           <li>
             <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>

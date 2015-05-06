@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.chihyang.com/"/>
-  <updated>2015-05-03T09:28:54.000Z</updated>
+  <updated>2015-05-06T08:27:53.000Z</updated>
   <id>http://blog.chihyang.com/</id>
   
   <author>
@@ -13,6 +13,23 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[RBM for Collaborative Filtering]]></title>
+    <link href="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/"/>
+    <id>http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/</id>
+    <published>2015-05-06T07:31:02.000Z</published>
+    <updated>2015-05-06T08:27:53.000Z</updated>
+    <content type="html"><![CDATA[<p>RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has the same number of hidden units, but an RBM only has visible softmax units for the movies rated by that user, so an RBM has few connections if that user rated few movies, to simply the model, assume weights and biases are tied together, so if two users have rated the same movie, their two RBM’s must use the same weights between the softmax visible unit for that movie and the hidden units, an suppose a user rated m movies, let V be a K × m observed binary indicator matrix with $v_{i}^k = 1$ if the user rated movie i as k and 0 otherwise. also let $h_j$, j = 1,…,F. So this is a softmax RBM, to make prediction, need to evaluate:<br>$$<br>p(v_q^k=1|V)=\frac{p(v_q^k,V)}{p(V)} \sim \sum_h exp(-E(v_q^k,V,h))\\<br>\sim exp(v_q^kb_q^k)\prod^F_{j=1}(1+exp(\sum_{il}v_i^lw_{ij}^l+v_q^kw_{qj}^k+b_j))<br>$$</p>
+<p>after train the model, pick the rating k with the maximum probability.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To us]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[restricted Boltzmann machine on document classification]]></title>
