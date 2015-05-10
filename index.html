@@ -66,6 +66,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Deep-Belief-Network-and-training" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/10/Deep-Belief-Network-and-training/" class="article-date">
+  <time datetime="2015-05-10T07:25:33.000Z" itemprop="datePublished">2015-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/10/Deep-Belief-Network-and-training/">Deep Belief Network and training</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Deep Belief Network(DBN) are probabilistic generative models that contain many layers of hidden variables, in which each layer captures high-order correlations between the activities of hidden features in the layer below. The top two layers of the DBN form an undirected bipartite graph with the lower layers forming a directed sigmoid belief network. We can use DBN to pretrain the unlabled data to get more useful features.</p>
+<p>Consider a DBN with two hidden layers $h^1,h^2$, and assume the number of the 2nd layer hidden units is the same as the number of visible units, join distribution is:<br>$$<br>p(v,h^1,h^2,\theta)=p(v|h^1,w^1)p(h^1,h^2,w^2) \\<br>p(v|h^1,w^1)=\prod_i p(v_i|h^1,w^1) \\<br>p(v_i=1|h^1,w^1)=\sigma(\sum_jw_{ij}^1h_j^1) \\<br>p(h^1,h^2,w^2)=\frac{1}{Z}exp(h^{1T}w^2h^2)<br>$$</p>
+<p>if we initialize $w^2=w^{1T}$, then:<br>$$<br>p(v,h^1,\theta)=p(v|h^1,w^1)\sum_{h2}p(h^1,h^2,w^2)\\<br>=\frac{1}{Z(W^1)}exp(\sum_{ij}w^1_{ij}v_ih_j^1) \text{ which is just the distribution of RBM consist of first two layers }<br>$$</p>
+<p>the result means the two-hidden-layer DBN is at least as good as our original RBM, so we can use $w^1$ of RBM as the $w^1$ of DBN, next to get $w^2$, repeat the same process, use the sample from first RBM as input of next RBM, the trained weight as $w^2$, so recursive greedy learning procedure for the DBN is:</p>
+<ol>
+<li>train the first layer RBM, get weight $w^1$.</li>
+<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
+<li>use the sample h1 train second RBM, get $w^2$.</li>
+<li>fix $w^2$, use sample from Q(h2|h1) = p(h2|h1,w2) as the data for training the 3rd layer of binary features.</li>
+<li>proceed for the following layers.</li>
+</ol>
+<p>another training algorithm is approximate distribution Q has factorized form:<br>$$<br>Q(h^1,…,h^L|v)=\prod^L_{l=1}Q(h^l|v) \\<br>Q(h^1|v)=\prod_{j}q(h^1_j|v), q(h^1_j=1|v)=\sigma(\sum_i w_{ij}^1v_i+a^1_j) \\<br>Q(h^l|v)=\prod_{j}q(h^l_j|v), q(h^l_j=1|v)=\sigma(\sum_i w_{ij}^lq(h_i^{l-1}=1|v)+a^l_j)<br>$$</p>
+<p>then:</p>
+<ol>
+<li>train the first layer RBM, get weight $w^1$.</li>
+<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
+<li>use the sample h1 train second RBM, get $w^2$.</li>
+<li>fix $w^2$, use sample from Q(h2|v) as the data for training the 3rd layer of binary features.</li>
+<li>proceed for the following layers.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/10/Deep-Belief-Network-and-training/" data-id="ci9i53m8j000ao6s685txxlu8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-RBM-for-Real-valued-data" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/10/RBM-for-Real-valued-data/" class="article-date">
@@ -96,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9hzza8z0003lgs6xg893yxj" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9i53m850003o6s6o6499to0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -136,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9hzza9i0005lgs6zcyx8iey" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9i53m8b0005o6s6clbnkhtx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -181,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9hzza6t0000lgs6h1lyen03" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9i53m6q0000o6s63z8nnadi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -228,7 +286,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9hzza9p000algs6vf3ix29s" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9i53m8p000co6s66udt14ea" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -267,7 +325,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9hzza9l0007lgs6snaeuwe1" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9i53m8d0007o6s66yywfzg6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
@@ -290,7 +348,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">4</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -308,7 +366,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -318,6 +376,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/05/10/Deep-Belief-Network-and-training/">Deep Belief Network and training</a>
+          </li>
         
           <li>
             <a href="/2015/05/10/RBM-for-Real-valued-data/">RBM for Real-valued data</a>
@@ -333,10 +395,6 @@
         
           <li>
             <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/">ALS collaborative filtering for implicit feedback data</a>
-          </li>
-        
-          <li>
-            <a href="/2015/05/01/Old-Blogs-here/">Old Blogs here</a>
           </li>
         
       </ul>
