@@ -66,6 +66,48 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-RBM-for-Real-valued-data" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/10/RBM-for-Real-valued-data/" class="article-date">
+  <time datetime="2015-05-10T05:00:40.000Z" itemprop="datePublished">2015-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/10/RBM-for-Real-valued-data/">RBM for Real-valued data</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RBM can be generalized to real value input, suppose input unit $v \in R^D$ and stochastic hidden unit h is still the binary unit.</p>
+<p>We treat the input v as Gaussian random variables, the energy of RBM defined as:<br>$$<br>E(v,h,\theta)=\sum^D_{i=1}\frac{(v_i-b_i)^2}{2\sigma_i^2}-\sum^D_{i=1}\sum^F_{j=1}w_{ij}h_j\frac{v_i}{\sigma_i}-\sum^F_{j=1}a_jh_j<br>$$</p>
+<p>the conditional distribution then changed to:<br>$$<br>p(v_i=x|h)=\frac{1}{(2\pi\sigma_i)^{1/2}}exp(-\frac{(x-b_i-\sigma_i\sum_jh_jw_{ij})^2}{2\sigma_i^2}) \\<br>p(h_j=1|v)=\sigma(b_j+\sum_iw_{ij}\frac{v_i}{\sigma_i})<br>$$</p>
+<p>to train it, the derivative of the log-likelihood with respect to w:<br>$$<br>\frac{\partial logp(v,\theta)}{\partial w_{ij}}=&lt;\frac{1}{\sigma_i}v_ih_j&gt;_{data}-&lt;\frac{1}{\sigma_i}v_ih_j&gt;_{model}<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9hzza8z0003lgs6xg893yxj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-RBM-for-Collaborative-Filtering" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/06/RBM-for-Collaborative-Filtering/" class="article-date">
@@ -94,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9cfgsm50003s3s6mt63y3h0" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9hzza9i0005lgs6zcyx8iey" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -139,7 +181,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9cfgskd0000s3s6rq2pddqq" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9hzza6t0000lgs6h1lyen03" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -186,7 +228,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9cfgsn20007s3s6fqj8u4ev" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9hzza9p000algs6vf3ix29s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -225,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9cfgsmy0004s3s6ru1ijpko" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9hzza9l0007lgs6snaeuwe1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
@@ -248,7 +290,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">3</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -266,7 +308,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -276,6 +318,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/05/10/RBM-for-Real-valued-data/">RBM for Real-valued data</a>
+          </li>
         
           <li>
             <a href="/2015/05/06/RBM-for-Collaborative-Filtering/">RBM for Collaborative Filtering</a>

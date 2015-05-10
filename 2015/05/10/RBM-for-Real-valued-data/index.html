@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | Science, Engineering, Life</title>
+  <title>RBM for Real-valued data | Science, Engineering, Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Science, Engineering, Life">
-<meta property="og:url" content="http://blog.chihyang.com/archives/index.html">
+  <meta name="description" content="RBM can be generalized to real value input, suppose input unit $v \in R^D$ and stochastic hidden unit h is still the binary unit.
+We treat the input v as Gaussian random variables, the energy of RBM d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RBM for Real-valued data">
+<meta property="og:url" content="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/index.html">
 <meta property="og:site_name" content="Science, Engineering, Life">
-<meta property="og:description">
+<meta property="og:description" content="RBM can be generalized to real value input, suppose input unit $v \in R^D$ and stochastic hidden unit h is still the binary unit.
+We treat the input v as Gaussian random variables, the energy of RBM d">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Science, Engineering, Life">
-<meta name="twitter:description">
+<meta name="twitter:title" content="RBM for Real-valued data">
+<meta name="twitter:description" content="RBM can be generalized to real value input, suppose input unit $v \in R^D$ and stochastic hidden unit h is still the binary unit.
+We treat the input v as Gaussian random variables, the energy of RBM d">
   
     <link rel="alternative" href="/atom.xml" title="Science, Engineering, Life" type="application/atom+xml">
   
@@ -64,115 +67,58 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/10/RBM-for-Real-valued-data/" class="archive-article-date">
-  <time datetime="2015-05-10T05:00:40.000Z" itemprop="datePublished">May 10</time>
+        <section id="main"><article id="post-RBM-for-Real-valued-data" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/10/RBM-for-Real-valued-data/" class="article-date">
+  <time datetime="2015-05-10T05:00:40.000Z" itemprop="datePublished">2015-05-10</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/10/RBM-for-Real-valued-data/">RBM for Real-valued data</a>
+    <h1 class="article-title" itemprop="name">
+      RBM for Real-valued data
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/06/RBM-for-Collaborative-Filtering/" class="archive-article-date">
-  <time datetime="2015-05-06T07:31:02.000Z" itemprop="datePublished">May 6</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/06/RBM-for-Collaborative-Filtering/">RBM for Collaborative Filtering</a>
-    </h1>
-  
+        <p>RBM can be generalized to real value input, suppose input unit $v \in R^D$ and stochastic hidden unit h is still the binary unit.</p>
+<p>We treat the input v as Gaussian random variables, the energy of RBM defined as:<br>$$<br>E(v,h,\theta)=\sum^D_{i=1}\frac{(v_i-b_i)^2}{2\sigma_i^2}-\sum^D_{i=1}\sum^F_{j=1}w_{ij}h_j\frac{v_i}{\sigma_i}-\sum^F_{j=1}a_jh_j<br>$$</p>
+<p>the conditional distribution then changed to:<br>$$<br>p(v_i=x|h)=\frac{1}{(2\pi\sigma_i)^{1/2}}exp(-\frac{(x-b_i-\sigma_i\sum_jh_jw_{ij})^2}{2\sigma_i^2}) \\<br>p(h_j=1|v)=\sigma(b_j+\sum_iw_{ij}\frac{v_i}{\sigma_i})<br>$$</p>
+<p>to train it, the derivative of the log-likelihood with respect to w:<br>$$<br>\frac{\partial logp(v,\theta)}{\partial w_{ij}}=&lt;\frac{1}{\sigma_i}v_ih_j&gt;_{data}-&lt;\frac{1}{\sigma_i}v_ih_j&gt;_{model}<br>$$</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" class="archive-article-date">
-  <time datetime="2015-05-03T07:40:19.000Z" itemprop="datePublished">May 3</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" class="archive-article-date">
-  <time datetime="2015-05-02T07:22:56.000Z" itemprop="datePublished">May 2</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9hzza8z0003lgs6xg893yxj" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/">ALS collaborative filtering for implicit feedback data</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/05/01/Old-Blogs-here/" class="archive-article-date">
-  <time datetime="2015-05-01T10:56:14.000Z" itemprop="datePublished">May 1</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/01/Old-Blogs-here/">Old Blogs here</a>
-    </h1>
-  
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/05/06/RBM-for-Collaborative-Filtering/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RBM for Collaborative Filtering</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">
