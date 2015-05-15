@@ -66,6 +66,63 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-extract-high-level-features-using-DBN" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/15/extract-high-level-features-using-DBN/" class="article-date">
+  <time datetime="2015-05-15T08:31:46.000Z" itemprop="datePublished">2015-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/15/extract-high-level-features-using-DBN/">extract high level features using DBN</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order correlation between lower level features, e.g. pixel correlation of images, generally will improve the performance.</p>
+<p>As previously post mentioned, DBN is a probability model gives:<br>$$<br>p(v,h^1,…,h^L)=p(v|h^1)…p(h^{L-2}|h^{L-1})p(h^{L-1}，h^{L})<br>$$</p>
+<p>training process is treat it as a strack of RBMs, this way DBN is approximated by:<br>$$<br>Q(h^1,…,h^L|v)=Q(h^1|v)Q(h^2|h^1)…Q(h^{L}|h^{L-1})<br>$$</p>
+<p>so we get a directed gragh model, if assume posterior Q is factorized, we can approximately train DBN as:</p>
+<ol>
+<li>train the first layer RBM, get weight $w^1$.</li>
+<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
+<li>use the sample h1 train second RBM, get $w^2$.</li>
+<li>fix $w^2$, use sample from Q(h2|v) as the data for training the 3rd layer of binary features.</li>
+<li>proceed for the following layers.</li>
+</ol>
+<p>The posterior distribution of final output layer $Q(h^L|v)$ can be calculated using:<br>$$<br>Q(h^1|v)=\prod_{j}q(h^1_j|v), q(h^1_j=1|v)=\sigma(\sum_i w_{ij}^1v_i+a^1_j) \\<br>Q(h^l|v)=\prod_{j}q(h^l_j|v), q(h^l_j=1|v)=\sigma(\sum_i w_{ij}^lq(h_i^{l-1}=1|v)+a^l_j)<br>$$</p>
+<p>We can see this result actually introduce a MLP network, well for each hidden layer, replace all hidden units with their real-valued probabilities which calculated by sigma unit.</p>
+<p>So first use unlabled data train a DBN to get network parameter w, use w, we get a MLP network deduced by above $Q(h^L|v)$, we use the $Q(h^L|v)$ as high level feature, which can be used as input feature for other models. Note here training only use the unlabled data set, for labled data set, we can get their high level features, then apply these transformed feature to some supervised model, through the supervised training, again we refine the parameter w. One example is apply it to Gaussian process, which need to specify covariance function $K_{ij}=K(x_i,x_j)=\alpha exp(-\frac{1}{2\beta}(x_i-x_j)^T(x_i-x_j))$, the high level feature get from DBN is actually deduce a nonlinear mapping $F(x,w)=Q(h^L|x)$, substitue it into K:<br>$$<br>K_{ij}=\alpha exp(-\frac{1}{2\beta}(F(x_i,w)-F(x_j,w))^T(F(x_i,w)-F(x_j,w)))<br>$$</p>
+<p>firstly initialize it with w which trained by DBN, and use maximum likelihood to refined w, the most important point here is via DBN:</p>
+<ol>
+<li>we can get a better initial w, instead of picking them randomly.</li>
+<li>we can get high level feature recover high order correlation.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/" data-id="ci9mhy5eq0003pus6z5aq3od2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Deep-Belief-Network-and-training" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/10/Deep-Belief-Network-and-training/" class="article-date">
@@ -112,7 +169,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/10/Deep-Belief-Network-and-training/" data-id="ci9i53m8j000ao6s685txxlu8" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/10/Deep-Belief-Network-and-training/" data-id="ci9mhy5fm000cpus6ng865l7t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -154,7 +211,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9i53m850003o6s6o6499to0" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/10/RBM-for-Real-valued-data/" data-id="ci9mhy5f90005pus6ha9t0dea" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -194,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9i53m8b0005o6s6clbnkhtx" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9mhy5fd0007pus6t5picplz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -239,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9i53m6q0000o6s63z8nnadi" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" data-id="ci9mhy5ct0000pus6bao3tvh6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -286,7 +343,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9i53m8p000co6s66udt14ea" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9mhy5fp000epus6b20v003o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -325,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9i53m8d0007o6s66yywfzg6" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/01/Old-Blogs-here/" data-id="ci9mhy5fh0009pus6o8ojbjig" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
@@ -348,7 +405,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">5</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a><span class="tag-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -366,7 +423,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">7</span></li></ul>
     </div>
   </div>
 
@@ -376,6 +433,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/05/15/extract-high-level-features-using-DBN/">extract high level features using DBN</a>
+          </li>
         
           <li>
             <a href="/2015/05/10/Deep-Belief-Network-and-training/">Deep Belief Network and training</a>
@@ -391,10 +452,6 @@
         
           <li>
             <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/">restricted Boltzmann machine on document classification</a>
-          </li>
-        
-          <li>
-            <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/">ALS collaborative filtering for implicit feedback data</a>
           </li>
         
       </ul>

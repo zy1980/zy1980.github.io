@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.chihyang.com/"/>
-  <updated>2015-05-10T11:45:35.000Z</updated>
+  <updated>2015-05-15T14:35:02.000Z</updated>
   <id>http://blog.chihyang.com/</id>
   
   <author>
@@ -13,6 +13,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[extract high level features using DBN]]></title>
+    <link href="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/"/>
+    <id>http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/</id>
+    <published>2015-05-15T08:31:46.000Z</published>
+    <updated>2015-05-15T14:35:02.000Z</updated>
+    <content type="html"><![CDATA[<p>Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order correlation between lower level features, e.g. pixel correlation of images, generally will improve the performance.</p>
+<p>As previously post mentioned, DBN is a probability model gives:<br>$$<br>p(v,h^1,…,h^L)=p(v|h^1)…p(h^{L-2}|h^{L-1})p(h^{L-1}，h^{L})<br>$$</p>
+<p>training process is treat it as a strack of RBMs, this way DBN is approximated by:<br>$$<br>Q(h^1,…,h^L|v)=Q(h^1|v)Q(h^2|h^1)…Q(h^{L}|h^{L-1})<br>$$</p>
+<p>so we get a directed gragh model, if assume posterior Q is factorized, we can approximately train DBN as:</p>
+<ol>
+<li>train the first layer RBM, get weight $w^1$.</li>
+<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
+<li>use the sample h1 train second RBM, get $w^2$.</li>
+<li>fix $w^2$, use sample from Q(h2|v) as the data for training the 3rd layer of binary features.</li>
+<li>proceed for the following layers.</li>
+</ol>
+<p>The posterior distribution of final output layer $Q(h^L|v)$ can be calculated using:<br>$$<br>Q(h^1|v)=\prod_{j}q(h^1_j|v), q(h^1_j=1|v)=\sigma(\sum_i w_{ij}^1v_i+a^1_j) \\<br>Q(h^l|v)=\prod_{j}q(h^l_j|v), q(h^l_j=1|v)=\sigma(\sum_i w_{ij}^lq(h_i^{l-1}=1|v)+a^l_j)<br>$$</p>
+<p>We can see this result actually introduce a MLP network, well for each hidden layer, replace all hidden units with their real-valued probabilities which calculated by sigma unit.</p>
+<p>So first use unlabled data train a DBN to get network parameter w, use w, we get a MLP network deduced by above $Q(h^L|v)$, we use the $Q(h^L|v)$ as high level feature, which can be used as input feature for other models. Note here training only use the unlabled data set, for labled data set, we can get their high level features, then apply these transformed feature to some supervised model, through the supervised training, again we refine the parameter w. One example is apply it to Gaussian process, which need to specify covariance function $K_{ij}=K(x_i,x_j)=\alpha exp(-\frac{1}{2\beta}(x_i-x_j)^T(x_i-x_j))$, the high level feature get from DBN is actually deduce a nonlinear mapping $F(x,w)=Q(h^L|x)$, substitue it into K:<br>$$<br>K_{ij}=\alpha exp(-\frac{1}{2\beta}(F(x_i,w)-F(x_j,w))^T(F(x_i,w)-F(x_j,w)))<br>$$</p>
+<p>firstly initialize it with w which trained by DBN, and use maximum likelihood to refined w, the most important point here is via DBN:</p>
+<ol>
+<li>we can get a better initial w, instead of picking them randomly.</li>
+<li>we can get high level feature recover high order correlation.</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn high]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Deep Belief Network and training]]></title>

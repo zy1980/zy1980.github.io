@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>RBM for Collaborative Filtering | Science, Engineering, Life</title>
+  <title>extract high level features using DBN | Science, Engineering, Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has t">
+  <meta name="description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RBM for Collaborative Filtering">
-<meta property="og:url" content="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/index.html">
+<meta property="og:title" content="extract high level features using DBN">
+<meta property="og:url" content="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/index.html">
 <meta property="og:site_name" content="Science, Engineering, Life">
-<meta property="og:description" content="RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has t">
+<meta property="og:description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RBM for Collaborative Filtering">
-<meta name="twitter:description" content="RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has t">
+<meta name="twitter:title" content="extract high level features using DBN">
+<meta name="twitter:description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
   
     <link rel="alternative" href="/atom.xml" title="Science, Engineering, Life" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-RBM-for-Collaborative-Filtering" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-extract-high-level-features-using-DBN" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/05/06/RBM-for-Collaborative-Filtering/" class="article-date">
-  <time datetime="2015-05-06T07:31:02.000Z" itemprop="datePublished">2015-05-06</time>
+    <a href="/2015/05/15/extract-high-level-features-using-DBN/" class="article-date">
+  <time datetime="2015-05-15T08:31:46.000Z" itemprop="datePublished">2015-05-15</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      RBM for Collaborative Filtering
+      extract high level features using DBN
     </h1>
   
 
@@ -86,13 +86,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>RBM is the best single model for collaborative filtering, suppose we have M movies, N users, and integer rating values from 1 to K. To use RBM model, use a different RBM for each user, every RBM has the same number of hidden units, but an RBM only has visible softmax units for the movies rated by that user, so an RBM has few connections if that user rated few movies, to simply the model, assume weights and biases are tied together, so if two users have rated the same movie, their two RBM’s must use the same weights between the softmax visible unit for that movie and the hidden units, an suppose a user rated m movies, let V be a K × m observed binary indicator matrix with $v_{i}^k = 1$ if the user rated movie i as k and 0 otherwise. also let $h_j$, j = 1,…,F. So this is a softmax RBM, to make prediction, need to evaluate:<br>$$<br>p(v_q^k=1|V)=\frac{p(v_q^k,V)}{p(V)} \sim \sum_h exp(-E(v_q^k,V,h))\\<br>\sim exp(v_q^kb_q^k)\prod^F_{j=1}(1+exp(\sum_{il}v_i^lw_{ij}^l+v_q^kw_{qj}^k+b_j))<br>$$</p>
-<p>after train the model, pick the rating k with the maximum probability.</p>
+        <p>Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order correlation between lower level features, e.g. pixel correlation of images, generally will improve the performance.</p>
+<p>As previously post mentioned, DBN is a probability model gives:<br>$$<br>p(v,h^1,…,h^L)=p(v|h^1)…p(h^{L-2}|h^{L-1})p(h^{L-1}，h^{L})<br>$$</p>
+<p>training process is treat it as a strack of RBMs, this way DBN is approximated by:<br>$$<br>Q(h^1,…,h^L|v)=Q(h^1|v)Q(h^2|h^1)…Q(h^{L}|h^{L-1})<br>$$</p>
+<p>so we get a directed gragh model, if assume posterior Q is factorized, we can approximately train DBN as:</p>
+<ol>
+<li>train the first layer RBM, get weight $w^1$.</li>
+<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
+<li>use the sample h1 train second RBM, get $w^2$.</li>
+<li>fix $w^2$, use sample from Q(h2|v) as the data for training the 3rd layer of binary features.</li>
+<li>proceed for the following layers.</li>
+</ol>
+<p>The posterior distribution of final output layer $Q(h^L|v)$ can be calculated using:<br>$$<br>Q(h^1|v)=\prod_{j}q(h^1_j|v), q(h^1_j=1|v)=\sigma(\sum_i w_{ij}^1v_i+a^1_j) \\<br>Q(h^l|v)=\prod_{j}q(h^l_j|v), q(h^l_j=1|v)=\sigma(\sum_i w_{ij}^lq(h_i^{l-1}=1|v)+a^l_j)<br>$$</p>
+<p>We can see this result actually introduce a MLP network, well for each hidden layer, replace all hidden units with their real-valued probabilities which calculated by sigma unit.</p>
+<p>So first use unlabled data train a DBN to get network parameter w, use w, we get a MLP network deduced by above $Q(h^L|v)$, we use the $Q(h^L|v)$ as high level feature, which can be used as input feature for other models. Note here training only use the unlabled data set, for labled data set, we can get their high level features, then apply these transformed feature to some supervised model, through the supervised training, again we refine the parameter w. One example is apply it to Gaussian process, which need to specify covariance function $K_{ij}=K(x_i,x_j)=\alpha exp(-\frac{1}{2\beta}(x_i-x_j)^T(x_i-x_j))$, the high level feature get from DBN is actually deduce a nonlinear mapping $F(x,w)=Q(h^L|x)$, substitue it into K:<br>$$<br>K_{ij}=\alpha exp(-\frac{1}{2\beta}(F(x_i,w)-F(x_j,w))^T(F(x_i,w)-F(x_j,w)))<br>$$</p>
+<p>firstly initialize it with w which trained by DBN, and use maximum likelihood to refined w, the most important point here is via DBN:</p>
+<ol>
+<li>we can get a better initial w, instead of picking them randomly.</li>
+<li>we can get high level feature recover high order correlation.</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/06/RBM-for-Collaborative-Filtering/" data-id="ci9mhy5fd0007pus6t5picplz" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/" data-id="ci9mhy5eq0003pus6z5aq3od2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -103,19 +120,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/05/10/RBM-for-Real-valued-data/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          RBM for Real-valued data
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/05/10/Deep-Belief-Network-and-training/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">restricted Boltzmann machine on document classification</div>
+      <div class="article-nav-title">Deep Belief Network and training</div>
     </a>
   
 </nav>
