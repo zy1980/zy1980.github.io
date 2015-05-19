@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ALS collaborative filtering for implicit feedback data | Science, Engineering, Life</title>
+  <title>Nonlinear Dimensionality Reduction with autoencoder | Science, Engineering, Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we ca">
+  <meta name="description" content="We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actually we implement nonlinear dimensionality reduction which called">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ALS collaborative filtering for implicit feedback data">
-<meta property="og:url" content="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/index.html">
+<meta property="og:title" content="Nonlinear Dimensionality Reduction with autoencoder">
+<meta property="og:url" content="http://blog.chihyang.com/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/index.html">
 <meta property="og:site_name" content="Science, Engineering, Life">
-<meta property="og:description" content="Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we ca">
+<meta property="og:description" content="We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actually we implement nonlinear dimensionality reduction which called">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ALS collaborative filtering for implicit feedback data">
-<meta name="twitter:description" content="Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we ca">
+<meta name="twitter:title" content="Nonlinear Dimensionality Reduction with autoencoder">
+<meta name="twitter:description" content="We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actually we implement nonlinear dimensionality reduction which called">
   
     <link rel="alternative" href="/atom.xml" title="Science, Engineering, Life" type="application/atom+xml">
   
@@ -64,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-ALS-collaborative-filtering-for-implicit-feedback-data" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Nonlinear-Dimensionality-Reduction-with-autoencoder" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" class="article-date">
-  <time datetime="2015-05-02T07:22:56.000Z" itemprop="datePublished">2015-05-02</time>
+    <a href="/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/" class="article-date">
+  <time datetime="2015-05-19T00:58:08.000Z" itemprop="datePublished">2015-05-19</time>
 </a>
     
   </div>
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ALS collaborative filtering for implicit feedback data
+      Nonlinear Dimensionality Reduction with autoencoder
     </h1>
   
 
@@ -86,20 +86,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Previous post talk about ALS collaborative filtering for explict feedback data, the rating gives user’s preference on items, but in many situations, the rating is not available directly, instead we can get some implict feedback data, e.g. $r_{ui}$ express how frequently a user is buying a certain item, how much time the user view a web page. For these kind of data, there is a variant ALS collaborative filtering solution for it.</p>
-<p>Normally the numerical values of implicit feedback describe the frequency of actions, it express confidence how user like or dislike the item. Introduce binary variables $p_{ui}$, indicates the preference of user u to item i, defined as:<br>$$<br>p_{ui}=1 \text{ if } r_{ui}&gt;0, \text{ else } =0<br>$$</p>
-<p>to express the confidence of the preference, introdcue another variable:<br>$$<br>c_{ui}=1+\alpha r_{ui}<br>$$</p>
-<p>$\alpha$ controlled by experiment, as observe more evidence for positive preference, confidence in $p_{ui} = 1$ increases accordingly. We still employ the latent factor model, assume there is user factor $x_u$, item factor $y_i$, their inner product determine the perference, that is:<br>$$<br>p_{ui}=x^T_uy_i<br>$$</p>
-<p>here user and item factor should be common latent factor, because $p_{ui}$ is independent of scale, so it make sense. The cost function will be minimized is:<br>$$<br>\sum_{u,i}c_{ui}(p_{ui}-x^T_uy_i)^2+\lambda(\sum_u|x_u|^2+\sum_i|y_i|^2)<br>$$</p>
-<p>which weighted by its confidence. suppose $y_i$ is i-th row of nxf matrix Y, $x_u$ is u-th row of mxf matrix X, and for each user introduce diagonal nxn matrix $C^u$ for $C^u_{ii}=c_{ui}$,and vector $p(u) \in R^n$ contains all the preferences by u(the $p_{ui}$ values), derivative w.r.t $x_u$, get:<br>$$<br>-\sum_ic_{ui}(p_{ui}-x^T_uy_i)y_i+\lambda x_u=0 \\<br>=&gt; x_u=(\sum_i c_{ui}y_iy_i^T+\lambda)^{-1}\sum_ic_{ui}p_{ui}y_i \\<br>=&gt; x_u=(Y^TC^uY+\lambda I)^{-1}Y^TC^up(u)<br>$$</p>
-<p>same process get:<br>$$<br>y_i=(X^TC^iX+\lambda I)^{-1}X^TC^ip(i)<br>$$</p>
-<p>here p(i) is all the preferences for i, $C^i$ is diagonal m×m matrix C where $C^i_{uu} = c_{ui}$, to evaluate $Y^TC^uY$, note: $Y^TC^uY=Y^TY+Y^T(C^u-I)Y$, there are only small fraction of non-zero elements, this will speed up the calculation.</p>
-<p>When make recommendation, the inner product generally will not be 1 or 0, so recommend to user u the K items with the top K largest values of $p_{ui}$</p>
+        <p>We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actually we implement nonlinear dimensionality reduction which called autoencoder.</p>
+<p>To encode images, e.g. we can design a DBN with topology (28x28)-400-200-100-50-25-6, then train it with a stack of RBMs, after trained, replace activities of the binary features in each layer with deterministic real-valued probabilities. To get decoder just inverse the network, the output of decoder is just the reconstruction of original features, This is the pretrain stage.</p>
+<p>In the fine-tuning stage, by using backpropagation of error derivatives make the reconstruction error as small as possible.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/02/ALS-collaborative-filtering-for-implicit-feedback-data/" data-id="ci9umacr2000fobs6u6w8uf1w" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/" data-id="ci9umacqv000cobs67vl7j7b8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -110,19 +104,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/05/03/restricted-Boltzmann-machine-on-document-classification/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          restricted Boltzmann machine on document classification
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/05/01/Old-Blogs-here/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/05/15/extract-high-level-features-using-DBN/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Old Blogs here</div>
+      <div class="article-nav-title">extract high level features using DBN</div>
     </a>
   
 </nav>

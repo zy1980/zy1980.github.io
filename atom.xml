@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.chihyang.com/"/>
-  <updated>2015-05-15T14:35:02.000Z</updated>
+  <updated>2015-05-19T04:49:48.000Z</updated>
   <id>http://blog.chihyang.com/</id>
   
   <author>
@@ -13,6 +13,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Nonlinear Dimensionality Reduction with autoencoder]]></title>
+    <link href="http://blog.chihyang.com/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/"/>
+    <id>http://blog.chihyang.com/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/</id>
+    <published>2015-05-19T00:58:08.000Z</published>
+    <updated>2015-05-19T04:49:48.000Z</updated>
+    <content type="html"><![CDATA[<p>We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actually we implement nonlinear dimensionality reduction which called autoencoder.</p>
+<p>To encode images, e.g. we can design a DBN with topology (28x28)-400-200-100-50-25-6, then train it with a stack of RBMs, after trained, replace activities of the binary features in each layer with deterministic real-valued probabilities. To get decoder just inverse the network, the output of decoder is just the reconstruction of original features, This is the pretrain stage.</p>
+<p>In the fine-tuning stage, by using backpropagation of error derivatives make the reconstruction error as small as possible.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>We can use DBN to extract high level features, so if the dimentionality of high level feature much smaller than original feature, actuall]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[extract high level features using DBN]]></title>
