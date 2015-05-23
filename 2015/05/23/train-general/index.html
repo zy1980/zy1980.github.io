@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>extract high level features using DBN | Science, Engineering, Life</title>
+  <title>train general Boltzmann machine | Science, Engineering, Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
+  <meta name="description" content="Most general Boltzmann machine is defined as:$$E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh$$
+all the hidden units can be arranged into multiple hidden layers which is deep boltzmann machine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="extract high level features using DBN">
-<meta property="og:url" content="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/index.html">
+<meta property="og:title" content="train general Boltzmann machine">
+<meta property="og:url" content="http://blog.chihyang.com/2015/05/23/train-general/index.html">
 <meta property="og:site_name" content="Science, Engineering, Life">
-<meta property="og:description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
+<meta property="og:description" content="Most general Boltzmann machine is defined as:$$E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh$$
+all the hidden units can be arranged into multiple hidden layers which is deep boltzmann machine">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="extract high level features using DBN">
-<meta name="twitter:description" content="Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order cor">
+<meta name="twitter:title" content="train general Boltzmann machine">
+<meta name="twitter:description" content="Most general Boltzmann machine is defined as:$$E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh$$
+all the hidden units can be arranged into multiple hidden layers which is deep boltzmann machine">
   
     <link rel="alternative" href="/atom.xml" title="Science, Engineering, Life" type="application/atom+xml">
   
@@ -64,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-extract-high-level-features-using-DBN" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-train-general" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/05/15/extract-high-level-features-using-DBN/" class="article-date">
-  <time datetime="2015-05-15T08:31:46.000Z" itemprop="datePublished">2015-05-15</time>
+    <a href="/2015/05/23/train-general/" class="article-date">
+  <time datetime="2015-05-23T09:40:06.000Z" itemprop="datePublished">2015-05-23</time>
 </a>
     
   </div>
@@ -78,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      extract high level features using DBN
+      train general Boltzmann machine
     </h1>
   
 
@@ -86,30 +89,39 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Normally there are only a few labled training data set can be used, to utilize most of the unlabled dataset, we can use DBN to learn higher level features from raw input, it can capture high order correlation between lower level features, e.g. pixel correlation of images, generally will improve the performance.</p>
-<p>As previously post mentioned, DBN is a probability model gives:<br>$$<br>p(v,h^1,…,h^L)=p(v|h^1)…p(h^{L-2}|h^{L-1})p(h^{L-1}，h^{L})<br>$$</p>
-<p>training process is treat it as a strack of RBMs, this way DBN is approximated by:<br>$$<br>Q(h^1,…,h^L|v)=Q(h^1|v)Q(h^2|h^1)…Q(h^{L}|h^{L-1})<br>$$</p>
-<p>so we get a directed gragh model, if assume posterior Q is factorized, we can approximately train DBN as:</p>
+        <p>Most general Boltzmann machine is defined as:<br>$$<br>E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh<br>$$</p>
+<p>all the hidden units can be arranged into multiple hidden layers which is deep boltzmann machine. Conditional distribution given by:<br>$$<br>p(h_j=1|v,h_{-j})=\sigma(\sum^D_{i=1}W_{ij}v_i+\sum^F_{m=1-j}J_{km}h_j) \\<br>p(v_i=1|v_{-i},h)=\sigma(\sum^F_{j=1}W_{ij}h_j+\sum^D_{k=1-i}L_{ik}v_j)<br>$$</p>
+<p>the learning process is given by gradient ascent of likelihood:<br>$$<br>\delta W=\alpha ([vh^T]_{data}-[vh^T]_{model}) \\<br>\delta L=\alpha ([vv^T]_{data}-[vv^T]_{model}) \\<br>\delta J=\alpha ([hh^T]_{data}-[hh^T]_{model})<br>$$</p>
+<p>first item is expection with respect to data distribution $p_{data}(h,v,\theta)=p(h|v,\theta)p_{data}(v)$, where $p_{data}(v)=\frac{1}{N}\sum_n\delta(v-v_n)$, second item is expection w.r.t real model distribution, so to train the model we have to evaluate data dependent expectation and model expection.</p>
+<h1 id="Model_expectation">Model expectation</h1><p>we can use Persistent Contrastive Divergence to estimate model expectation,for any exponential family $p(x,\theta)=\frac{1}{Z(\theta)}exp(\theta^T\Phi(x))$, parameter update given by: $\theta^{t+1}=\theta^{t}+\alpha_t[\Phi(x)-E_{model}[\Phi(x)]]$, the PCD approximates model expectation as follows:</p>
 <ol>
-<li>train the first layer RBM, get weight $w^1$.</li>
-<li>fix $w^1$, get samples h1 from Q(h1|v) = P(h1|v, w1).</li>
-<li>use the sample h1 train second RBM, get $w^2$.</li>
-<li>fix $w^2$, use sample from Q(h2|v) as the data for training the 3rd layer of binary features.</li>
-<li>proceed for the following layers.</li>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(x^{0,1},…,x^{0,M})$</li>
+<li>for each iteration, keep $\theta^t$ fixed, generate another M new sample $x^{t+1,i}$ from distribution $p(x^{t+1,i}|x^{t,i},\theta^t)$</li>
+<li>update $\theta^{t+1}=\theta^{t}+\alpha_t[\Phi(x)-\frac{1}{M}\sum^M_{m=1}\Phi(x^{t+1,m})]$</li>
 </ol>
-<p>The posterior distribution of final output layer $Q(h^L|v)$ can be calculated using:<br>$$<br>Q(h^1|v)=\prod_{j}q(h^1_j|v), q(h^1_j=1|v)=\sigma(\sum_i w_{ij}^1v_i+a^1_j) \\<br>Q(h^l|v)=\prod_{j}q(h^l_j|v), q(h^l_j=1|v)=\sigma(\sum_i w_{ij}^lq(h_i^{l-1}=1|v)+a^l_j)<br>$$</p>
-<p>We can see this result actually introduce a MLP network, well for each hidden layer, replace all hidden units with their real-valued probabilities which calculated by sigma unit.</p>
-<p>So first use unlabled data train a DBN to get network parameter w, use w, we get a MLP network deduced by above $Q(h^L|v)$, we use the $Q(h^L|v)$ as high level feature, which can be used as input feature for other models. Note here training only use the unlabled data set, for labled data set, we can get their high level features, then apply these transformed feature to some supervised model, through the supervised training, again we refine the parameter w. One example is apply it to Gaussian process, which need to specify covariance function $K_{ij}=K(x_i,x_j)=\alpha exp(-\frac{1}{2\beta}(x_i-x_j)^T(x_i-x_j))$, the high level feature get from DBN is actually deduce a nonlinear mapping $F(x,w)=Q(h^L|x)$, substitue it into K:<br>$$<br>K_{ij}=\alpha exp(-\frac{1}{2\beta}(F(x_i,w)-F(x_j,w))^T(F(x_i,w)-F(x_j,w)))<br>$$</p>
-<p>firstly initialize it with w which trained by DBN, and use maximum likelihood to refined w, the most important point here is via DBN:</p>
+<p>When apply to BM model:</p>
 <ol>
-<li>we can get a better initial w, instead of picking them randomly.</li>
-<li>we can get high level feature recover high order correlation.</li>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(v^{0,1},h^{0,1}),…,(v^{̃0,M},h^{0,M})$</li>
+<li>each iteration, running Gibbs sampler to get $(v^{t+1,i},h^{t+1,i})$ from the result of above BM conditional distribution for h and v, use these samples to update parameter for next iteration, and model expectation approximates as: $\frac{1}{M}\sum^M_{i=1}v^{t+1,i}(h^{t+1,i})^T$</li>
+</ol>
+<h1 id="Data_expectation">Data expectation</h1><p>To evaluate data expectation, key point is to get good approximate for $p(h|v,\theta)$, we can apply variational inference to this problem, in variational method, optimal solution happened when $Q(h,\mu)=p(h|v,\theta)$, using factoration approximation $Q(h,\mu)=\prod^F_{i=1}q(h_i), q(h_i=1)=\mu_i$, under mean field approximation:<br>$$<br>lnq(h_j)=E_{i!=j}[lnp(v,h)]+const \\<br>E_{i!=j}[lnp(v,h)]=\int lnp(v,h)\prod_{i!=j}q_idh_i<br>$$</p>
+<p>apply to BM model:<br>$$<br>\mu_j=\sigma(\sum_i W_{ij}v_i+\sum_{m!=j}J_{mj}\mu_m)<br>$$</p>
+<p>note here assume parameter $\theta$ is fixed, once get the $\mu_i$, we can appoximate data expectation with: $\frac{1}{N}\sum^N_{n=1}v^n(\mu^n)^T$</p>
+<p>Combine two estimation process, we get following general training algorithm for BM:</p>
+<ol>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(v^{0,1},h^{0,1}),…,(v^{̃0,M},h^{0,M})$</li>
+<li>for each iteration t=0 to T<ol>
+<li>fix $\theta$, use variational inference get optimal $\mu_i$</li>
+<li>use PCD sample m new samples by running Gibbs sampler</li>
+<li>update parameters as:<br>$$<br>W^{t+1}=W^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}v^n(\mu^n)^T-\frac{1}{M}\sum^M_{m=1}v^{t+1,m}(h^{t+1,m})^T) \\<br>J^{t+1}=J^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}\mu^n(\mu^n)^T-\frac{1}{M}\sum^M_{m=1}h^{t+1,m}(h^{t+1,m})^T) \\<br>L^{t+1}=L^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}v^n(v^n)^T-\frac{1}{M}\sum^M_{m=1}v^{t+1,m}(v^{t+1,m})^T)<br>$$</li>
+</ol>
+</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.chihyang.com/2015/05/15/extract-high-level-features-using-DBN/" data-id="cia0ullu20005lwfy6poam5kq" class="article-share-link">Share</a>
+      <a data-url="http://blog.chihyang.com/2015/05/23/train-general/" data-id="cia0ullqt0000lwfybr7duhdo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
@@ -120,19 +132,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Nonlinear Dimensionality Reduction with autoencoder
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/05/10/Deep-Belief-Network-and-training/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/05/19/Nonlinear-Dimensionality-Reduction-with-autoencoder/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Deep Belief Network and training</div>
+      <div class="article-nav-title">Nonlinear Dimensionality Reduction with autoencoder</div>
     </a>
   
 </nav>

@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.chihyang.com/"/>
-  <updated>2015-05-19T04:49:48.000Z</updated>
+  <updated>2015-05-23T14:26:40.000Z</updated>
   <id>http://blog.chihyang.com/</id>
   
   <author>
@@ -13,6 +13,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[train general Boltzmann machine]]></title>
+    <link href="http://blog.chihyang.com/2015/05/23/train-general/"/>
+    <id>http://blog.chihyang.com/2015/05/23/train-general/</id>
+    <published>2015-05-23T09:40:06.000Z</published>
+    <updated>2015-05-23T14:26:40.000Z</updated>
+    <content type="html"><![CDATA[<p>Most general Boltzmann machine is defined as:<br>$$<br>E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh<br>$$</p>
+<p>all the hidden units can be arranged into multiple hidden layers which is deep boltzmann machine. Conditional distribution given by:<br>$$<br>p(h_j=1|v,h_{-j})=\sigma(\sum^D_{i=1}W_{ij}v_i+\sum^F_{m=1-j}J_{km}h_j) \\<br>p(v_i=1|v_{-i},h)=\sigma(\sum^F_{j=1}W_{ij}h_j+\sum^D_{k=1-i}L_{ik}v_j)<br>$$</p>
+<p>the learning process is given by gradient ascent of likelihood:<br>$$<br>\delta W=\alpha ([vh^T]_{data}-[vh^T]_{model}) \\<br>\delta L=\alpha ([vv^T]_{data}-[vv^T]_{model}) \\<br>\delta J=\alpha ([hh^T]_{data}-[hh^T]_{model})<br>$$</p>
+<p>first item is expection with respect to data distribution $p_{data}(h,v,\theta)=p(h|v,\theta)p_{data}(v)$, where $p_{data}(v)=\frac{1}{N}\sum_n\delta(v-v_n)$, second item is expection w.r.t real model distribution, so to train the model we have to evaluate data dependent expectation and model expection.</p>
+<h1 id="Model_expectation">Model expectation</h1><p>we can use Persistent Contrastive Divergence to estimate model expectation,for any exponential family $p(x,\theta)=\frac{1}{Z(\theta)}exp(\theta^T\Phi(x))$, parameter update given by: $\theta^{t+1}=\theta^{t}+\alpha_t[\Phi(x)-E_{model}[\Phi(x)]]$, the PCD approximates model expectation as follows:</p>
+<ol>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(x^{0,1},…,x^{0,M})$</li>
+<li>for each iteration, keep $\theta^t$ fixed, generate another M new sample $x^{t+1,i}$ from distribution $p(x^{t+1,i}|x^{t,i},\theta^t)$</li>
+<li>update $\theta^{t+1}=\theta^{t}+\alpha_t[\Phi(x)-\frac{1}{M}\sum^M_{m=1}\Phi(x^{t+1,m})]$</li>
+</ol>
+<p>When apply to BM model:</p>
+<ol>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(v^{0,1},h^{0,1}),…,(v^{̃0,M},h^{0,M})$</li>
+<li>each iteration, running Gibbs sampler to get $(v^{t+1,i},h^{t+1,i})$ from the result of above BM conditional distribution for h and v, use these samples to update parameter for next iteration, and model expectation approximates as: $\frac{1}{M}\sum^M_{i=1}v^{t+1,i}(h^{t+1,i})^T$</li>
+</ol>
+<h1 id="Data_expectation">Data expectation</h1><p>To evaluate data expectation, key point is to get good approximate for $p(h|v,\theta)$, we can apply variational inference to this problem, in variational method, optimal solution happened when $Q(h,\mu)=p(h|v,\theta)$, using factoration approximation $Q(h,\mu)=\prod^F_{i=1}q(h_i), q(h_i=1)=\mu_i$, under mean field approximation:<br>$$<br>lnq(h_j)=E_{i!=j}[lnp(v,h)]+const \\<br>E_{i!=j}[lnp(v,h)]=\int lnp(v,h)\prod_{i!=j}q_idh_i<br>$$</p>
+<p>apply to BM model:<br>$$<br>\mu_j=\sigma(\sum_i W_{ij}v_i+\sum_{m!=j}J_{mj}\mu_m)<br>$$</p>
+<p>note here assume parameter $\theta$ is fixed, once get the $\mu_i$, we can appoximate data expectation with: $\frac{1}{N}\sum^N_{n=1}v^n(\mu^n)^T$</p>
+<p>Combine two estimation process, we get following general training algorithm for BM:</p>
+<ol>
+<li>Randomly initialize parameter vector $\theta_0$ and M samples: $(v^{0,1},h^{0,1}),…,(v^{̃0,M},h^{0,M})$</li>
+<li>for each iteration t=0 to T<ol>
+<li>fix $\theta$, use variational inference get optimal $\mu_i$</li>
+<li>use PCD sample m new samples by running Gibbs sampler</li>
+<li>update parameters as:<br>$$<br>W^{t+1}=W^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}v^n(\mu^n)^T-\frac{1}{M}\sum^M_{m=1}v^{t+1,m}(h^{t+1,m})^T) \\<br>J^{t+1}=J^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}\mu^n(\mu^n)^T-\frac{1}{M}\sum^M_{m=1}h^{t+1,m}(h^{t+1,m})^T) \\<br>L^{t+1}=L^t+\alpha_t(\frac{1}{N}\sum^N_{n=1}v^n(v^n)^T-\frac{1}{M}\sum^M_{m=1}v^{t+1,m}(v^{t+1,m})^T)<br>$$</li>
+</ol>
+</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Most general Boltzmann machine is defined as:<br>$$<br>E(v,h,\theta)=-\frac{1}{2}v^TLv-\frac{1}{2}h^TJh-v^TWh<br>$$</p>
+<p>all the hidden]]>
+    </summary>
+    
+      <category term="machine learning" scheme="http://blog.chihyang.com/tags/machine-learning/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Nonlinear Dimensionality Reduction with autoencoder]]></title>
